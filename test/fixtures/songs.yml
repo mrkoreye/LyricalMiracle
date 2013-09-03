@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  title: MyString
+  user_id: 1
+  body: MyText
+  album_title: MyString
+  youtube_link: MyString
+  artist: MyString
+
+two:
+  title: MyString
+  user_id: 1
+  body: MyText
+  album_title: MyString
+  youtube_link: MyString
+  artist: MyString

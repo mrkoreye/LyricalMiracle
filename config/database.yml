@@ -1,0 +1,8 @@
+
+development:
+  adapter: postgresql
+  database: lyrical_miracle_development
+  host: localhost
+
+
+
