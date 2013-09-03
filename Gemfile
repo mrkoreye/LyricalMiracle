@@ -18,3 +18,8 @@ gem 'jquery-rails'
 gem 'ejs'
 gem 'backbone-on-rails'
 gem 'sanitize'
+
+
+gem "therubyracer"
+gem "less-rails"
+gem "twitter-bootstrap-rails"
