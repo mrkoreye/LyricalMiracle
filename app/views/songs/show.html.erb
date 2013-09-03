@@ -2,4 +2,17 @@
 	<%= render(:file => 'songs/show', :formats => [:rabl]).html_safe %>
 </script>
 
+<script type="text/javascript">
+	$(document).ready(function(){
+	  LyricalMiracle.initialize();
+		$('#song-lyrics').mouseup(function () {
+			var selection = rangy.getSelection();
+			var parent_id = selection.anchorNode.parentNode.id;
+			if (!selection.isCollapsed && parent_id == "song-lyrics") {
+				alert("this might jusr work..");
+			}
+		});
+	});
+</script>
+
 

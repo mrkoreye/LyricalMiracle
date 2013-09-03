@@ -1,2 +1,6 @@
+
 <h1><%= song.escape("title")%> by <%= song.escape("artist") %></h1>
-<%= song.get("body") %>
+
+<div id='song-lyrics'>
+	<%= song.get("body") %>
+</div>

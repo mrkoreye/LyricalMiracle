@@ -6,7 +6,7 @@ window.LyricalMiracle = {
   initialize: function() {
     var div, songData, songs;
 	
-		// Need to go over this regarding XSS
+		// Need to go over this regarding cross site scripting
 		div = $('<div><div>');
 		div.html($('#bootstrapped-song').html());
 		console.log(div);
@@ -15,7 +15,7 @@ window.LyricalMiracle = {
 		
 		song = new LyricalMiracle.Models.Song(songData, {parse: true});
 		
-		var $rootEl = $("<div>");
+		var $rootEl = $("<div id='song-details'>");
 		$('body').append($rootEl);
 		
 		new LyricalMiracle.Routers.SongsRouter($rootEl, song);
@@ -23,6 +23,3 @@ window.LyricalMiracle = {
   }
 };
 
-$(document).ready(function(){
-  LyricalMiracle.initialize();
-});
