@@ -1,6 +1,6 @@
 LyricalMiracle::Application.routes.draw do
   devise_for :users
   resources :songs
-  resources :annotation
+  resources :annotations
   root :to => "songs#index"
 end

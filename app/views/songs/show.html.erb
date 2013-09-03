@@ -1,4 +1,5 @@
-<h1><%= @song.title %> by <%= @song.artist %></h1>
-<br>
-<br>
-<%= raw @song_lyrics %>
+<script type="text/json" id="bootstrapped-song">
+	<%= render(:file => 'songs/show', :formats => [:rabl]).html_safe %>
+</script>
+
+

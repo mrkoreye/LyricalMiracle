@@ -7,12 +7,13 @@ class SongsController < ApplicationController
   def show
     @song = Song.find(params[:id])
     html_lyrics = @song.body
-    @song_lyrics = Sanitize.clean(html_lyrics, 
+    song_lyrics = Sanitize.clean(html_lyrics, 
       :elements => ['a', 'br'],
       :attributes => {'a' => ['href', 'class']},
       :protocols => {'a' => {'href' => ['http', 'https']}},
       :remove_contents => true
     )
+    @song.body = song_lyrics
   end
   
   def new

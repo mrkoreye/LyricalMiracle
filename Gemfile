@@ -22,3 +22,6 @@ gem 'sanitize'
 
 gem 'devise'
 gem 'omniauth'
+
+gem 'rabl'
+gem 'ejs'
