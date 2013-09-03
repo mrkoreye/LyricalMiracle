@@ -58,22 +58,13 @@
 	</nav>
 	
 	
-  <div class="errors">
-    <% flash[:errors].try(:each) do |error| %>
-      <%= error %>
-    <% end %>
-  </div>
+	<p class="notice"><%= notice %></p>
+	<p class="alert"><%= alert %></p>
 	
 	<div id="main-container">
   	<%= yield %>
 	</div>
 
 
-  <div>
-    <%= button_to "Logout", session_path, :method => "delete" %>
-    Current User Id: <%= current_user.id if current_user %>
-		<br>
-    Session Token: <%= session[:session_token] %>
-  </div>
 </body>
 </html>

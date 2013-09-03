@@ -20,4 +20,5 @@ gem 'ejs'
 gem 'backbone-on-rails'
 gem 'sanitize'
 
-gem 'bcrypt-ruby'
+gem 'devise'
+gem 'omniauth'

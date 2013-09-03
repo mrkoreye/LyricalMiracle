@@ -1,5 +1,6 @@
 LyricalMiracle::Application.routes.draw do
-  resources :users
-  resource  :session, :only => [:create, :destroy, :new]
+  devise_for :users
+  resources :songs
+  resources :annotation
   root :to => "songs#index"
 end

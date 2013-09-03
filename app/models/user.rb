@@ -1,23 +1,11 @@
-require 'bcrypt'
-
 class User < ActiveRecord::Base
-  attr_accessible :email, :session_token, :username, :password
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
 
-  attr_reader :password
-
-  validates :username, :password_digest, :presence => true
-  validates :password, :length => { :minimum => 3 }
-
-  def password
-    @password || self.password_digest
-  end
-
-  def password=(password)
-    @password = password
-    self.password_digest = BCrypt::Password.create(password)
-  end
-
-  def verify_password(password)
-    BCrypt::Password.new(self.password_digest) == password
-  end
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me
+  # attr_accessible :title, :body
 end
