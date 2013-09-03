@@ -1,0 +1,13 @@
+<h1>Login: </h1>
+
+<form action="/session" method="post">
+
+  <label>Username: <input type="text" name="user[username]" /></label>
+  <label>Password: <input type="password" name="user[password]" /></label>
+  <input type="submit" value="Login" />
+
+</form>
+
+<p>
+  Don't have an account? Then <%= link_to "Sign Up", new_user_path %>
+</p>
