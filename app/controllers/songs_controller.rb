@@ -34,7 +34,7 @@ class SongsController < ApplicationController
     @song.body = params[:body]
     
     if @song.save
-      head :ok
+      render :json => @song
     end
   end
  

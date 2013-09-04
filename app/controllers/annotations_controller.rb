@@ -6,4 +6,16 @@ class AnnotationsController < ApplicationController
     @annotation.save
     render :json => @annotation
   end
+  
+  def update
+    @annotation = Annotation.find(params[:id])
+    @annotation.update_attributes(params[:annotation])
+    render :json => @annotation
+  end
+  
+  def destroy
+    @annotation = Annotation.find(params[:id])
+    @annotation.destroy
+    render :json => @annotation
+  end
 end

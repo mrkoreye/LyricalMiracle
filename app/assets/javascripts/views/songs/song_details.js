@@ -52,10 +52,9 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 				$('a[href$="/annotations/unsaved-ann"]').attr("href", "annotations/" + annotation.id)
 				
 				$('#text-to-annotate').html("<blockquote><em>" + currentSelection + "</em></blockquote>");
-				$('#annotation_body').val('');
+				$("#annotation_body").val('');
 			}
 		});
-		
 		
 		$('#new-annotation-modal').modal({
 			backdrop: false
@@ -67,15 +66,24 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 		$('#new-annotation-modal').modal('hide');
 		var annotationId = this.model.get('annotations').last().id;
 		var linkString = 'a[href="annotations/' + annotationId + '"]';
-		$(linkString).contents().unwrap();	
+		$(linkString).contents().unwrap();
+		this.model.get('annotations').last().destroy();	
 	},
 	
 	submitNewAnnotation: function (event) {
 		event.preventDefault();
 		$('#new-annotation-modal').modal('hide')
+	},
+	
+	submitNewAnnotation: function (event) {
+		event.preventDefault();
+		$('#new-annotation-modal').modal('hide');
+		var songLyrics = $('#song-lyrics').html();
+		this.model.get('annotations').last().save({
+			body: $("#annotation_body").val(),
+			song_id: window.location.pathname.substring(7)
+		})
+		this.model.save({body: songLyrics});	
 	}
-	
-	
-	
 
 });

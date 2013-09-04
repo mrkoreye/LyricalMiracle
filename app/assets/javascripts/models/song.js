@@ -13,5 +13,9 @@ LyricalMiracle.Models.Song = Backbone.Model.extend({
 		var json = _.clone(this.attributes);
 		delete json.annotations;
 		return json;
+	},
+	
+	url: function () {
+		return "/songs/" + this.id;
 	}
 });
