@@ -3,14 +3,53 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 #annotate-button {
 	position: absolute;
-	margin-top: -40px;
+	margin-top: -30px;
 	margin-right: 10px;
-	margin-bottom: -40px;
-	margin-left: -28px;
+	margin-bottom: -30px;
+	margin-left: -30px;
 	padding-top: 0px;
 	padding-right: 18px;
 	padding-bottom: 0px;
-	padding-left: 20px;
+	padding-left: 10px;
 	z-index: 100;
-	text-shadow: -1px #ffd769;
+	text-shadow: -2px #ffd769;
+	background-color: #FFFF00;
+	border-radius: 5px;
+	
+	border-top-color: rgba(200, 200, 200, 0.0980392);
+	border-right-color: rgba(200, 200, 200, 0.0980392);
+	border-bottom-color: rgba(200, 200, 200, 0.14902);
+	border-left-color: rgba(200, 200, 200, 0.0980392);
+	
+	border-style: solid;
+	height: 27px;
+	font-weight: bold;
+	width: 90px;
+	font-size: 14px;
+}
+
+#annotate-button:hover {
+	background-color: #EEEE00;
+}
+
+#annotate-button:after {
+  position: absolute;
+  display: block;
+  content: "";  
+  border-color: #EEEE00 transparent transparent transparent;
+  border-style: solid;
+  border-width: 10px;
+  height:0;
+  width:0;
+  position:absolute;
+  bottom:-23px;
+  left:1em;
+}
+
+#annotate-button:hover:after {
+	border-color: #EEEE00 transparent transparent transparent;
+}
+
+.annotation:hover {
+	
 }
