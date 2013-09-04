@@ -15,6 +15,7 @@
 //= require underscore
 //= require backbone
 //= require rangy-core
+//= require rangy-cssclassapplier
 //= require lyrical_miracle
 //= require_tree ../templates
 //= require_tree ./models

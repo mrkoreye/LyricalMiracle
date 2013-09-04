@@ -28,5 +28,14 @@ class SongsController < ApplicationController
       redirect_to song_url(@song)
     end
   end
+  
+  def update
+    @song = Song.find(params[:id])
+    @song.body = params[:body]
+    
+    if @song.save
+      head :ok
+    end
+  end
  
 end

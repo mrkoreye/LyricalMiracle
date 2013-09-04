@@ -5,13 +5,27 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 	  LyricalMiracle.initialize();
+
 		$('#song-lyrics').mouseup(function () {
-			var selection = rangy.getSelection();
+			var selection = window.getSelection();
+
 			var parent_id = selection.anchorNode.parentNode.id;
 			if (!selection.isCollapsed && parent_id == "song-lyrics") {
-				alert("this might jusr work..");
-			}
+				
+				document.designMode = "on";
+				document.execCommand("CreateLink", false, "/songs");
+	
+				// document.execCommand("insertHTML", false, "<button type='submit'>annotate me ;)</button>");
+				document.designMode = "off";
+				$("<span id='annotate-button'>Annotate meee</span>").insertAfter('a[href$="/songs"]');
+				
+				
+				
+				
+				
+			};
 		});
+		
 	});
 </script>
 
