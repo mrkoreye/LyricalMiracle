@@ -11,31 +11,4 @@
 
 
 
-	<div id="my-modal" class="modal" role="dialog">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button id="add-annotation-close" type="button" class="close" data-dismiss="modal" 						aria-hidden="true">&times;</button>
-	        <h4 class="modal-title">Add an Annotation</h4>
-	      </div>
-				
-				<form id="new-annotation" action="<%= annotations_url %>" method="post" role="form">
-					<input type="hidden" name="_method" value="put">
-	      <div class="modal-body">
-					
-					<div id="text-to-annotate">
-					</div>
-					<textarea class="form-control" id="annotation_body" name="annotation[body]" placeholder="Write your annotation here. Include html links to images or embedded YouTube videos if you like!" rows="5"></textarea>
-				
-	        
-					<br>
-	        <button type="btn-default" class="btn btn-primary">Create Annotation</button>
-					
-				</form>
-				
-	    </div>
-			<!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
 
-</form>

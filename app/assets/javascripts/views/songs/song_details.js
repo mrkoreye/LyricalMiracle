@@ -3,7 +3,8 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 		"mouseup #song-lyrics": "addAnnotationButton",
 		"mousedown #annotate-button": "showAnnotationForm",
 		"mousedown #song-lyrics": "removeAnnotationButton",
-		"mousedown #add-annotation-close": "removeAnnotationLink"
+		"click #new-annotation-modal-close": "removeAnnotationLink",
+		"submit #new-annotation": "submitNewAnnotation"
 	},
 	
   template: JST['songs/details'],
@@ -51,20 +52,27 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 				$('a[href$="/annotations/unsaved-ann"]').attr("href", "annotations/" + annotation.id)
 				
 				$('#text-to-annotate').html("<blockquote><em>" + currentSelection + "</em></blockquote>");
-				
+				$('#annotation_body').val('');
 			}
 		});
 		
 		
-		$('#my-modal').modal({
+		$('#new-annotation-modal').modal({
 			backdrop: false
 		});
 	},
 	
+	
 	removeAnnotationLink: function () {
-		console.log("i am here");
-		var annotationId = this.model.get('annotations').last.id;
-		$('a[href$="/annotations/"' + annotationId + ']').contents().unwrap();
+		$('#new-annotation-modal').modal('hide');
+		var annotationId = this.model.get('annotations').last().id;
+		var linkString = 'a[href="annotations/' + annotationId + '"]';
+		$(linkString).contents().unwrap();	
+	},
+	
+	submitNewAnnotation: function (event) {
+		event.preventDefault();
+		$('#new-annotation-modal').modal('hide')
 	}
 	
 	
