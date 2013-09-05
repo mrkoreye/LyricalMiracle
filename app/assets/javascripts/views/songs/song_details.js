@@ -61,7 +61,6 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 		});
 	},
 	
-	
 	removeAnnotationLink: function () {
 		$('#new-annotation-modal').modal('hide');
 		var annotationId = this.model.get('annotations').last().id;
@@ -79,11 +78,23 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 		event.preventDefault();
 		$('#new-annotation-modal').modal('hide');
 		var songLyrics = $('#song-lyrics').html();
-		this.model.get('annotations').last().save({
+		var annotation = this.model.get('annotations').last();
+		annotation.save({
 			body: $("#annotation_body").val(),
 			song_id: window.location.pathname.substring(7)
 		})
+		debugger
 		this.model.save({body: songLyrics});	
+		
+		$('a[href="annotations/' + annotation.id + '"]').popover({
+			content: "" + annotation.get("body"),
+			// trigger: "hover",
+			html: true
+		});
+		
+		$('a').click(function (event) {
+			event.preventDefault();
+		});
 	}
 
 });

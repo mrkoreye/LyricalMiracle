@@ -5,6 +5,7 @@ class SongsController < ApplicationController
   end
   
   def show
+    #need to sanitize each item because I am using .html()
     @song = Song.find(params[:id])
     html_lyrics = @song.body
     song_lyrics = Sanitize.clean(html_lyrics, 
@@ -23,6 +24,8 @@ class SongsController < ApplicationController
   def create
     @song = Song.new(params[:song])
     @song.body = @song.body.gsub("\r\n", "<br>")
+    @song.body = @song.body.gsub("\n", "")
+    @song.body = @song.body.gsub("\t", "")
     
     if @song.save
       redirect_to song_url(@song)
@@ -32,6 +35,10 @@ class SongsController < ApplicationController
   def update
     @song = Song.find(params[:id])
     @song.body = params[:body]
+    
+    @song.body = @song.body.gsub("\r\n", "<br>")
+    @song.body = @song.body.gsub("\n", "")
+    @song.body = @song.body.gsub("\t", "")
     
     if @song.save
       render :json => @song
