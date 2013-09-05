@@ -1,8 +1,9 @@
 LyricalMiracle.Views.SongDetails = Backbone.View.extend({
+	
 	events: {
 		"mouseup #song-lyrics": "addAnnotationButton",
 		"mousedown #annotate-button": "showAnnotationForm",
-		"mousedown #song-lyrics": "removeAnnotationButton",
+		"mousedown #song-lyrics": "removeAnnotationButtonPopover",
 		"click #new-annotation-modal-close": "removeAnnotationLink",
 		"submit #new-annotation": "submitNewAnnotation"
 	},
@@ -17,21 +18,24 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	addAnnotationButton: function () {
 		var selection = window.getSelection();
 		
+		
 		if (!selection.isCollapsed) {
 			var parent_id = selection.anchorNode.parentNode.id;
+			var noAnnotationPresent = this._noAnnotationPresent(selection);
 			
-			if (parent_id == "song-lyrics") {
-				document.designMode = "on";
-				document.execCommand("CreateLink", false, "/songs");
-				var el = "<span id='annotate-button'>Annotate</span>"
-				$(el).insertAfter('a[href$="/songs"]');
-				document.execCommand("unlink", false)
-				document.designMode = "off";
-			}
+			if (parent_id == "song-lyrics" && noAnnotationPresent) {
+				this._displayAnnotationButton();
+			};
 		};
 	},
 	
-	removeAnnotationButton: function () {
+	removeAnnotationButtonPopover: function () {
+		// $('a').not(this).popover('hide');
+	
+		// $('.popover-link').not(this).popover('hide');
+		// $('.popover-link').on('click', function (e) {
+// 		    $('a').not(this).popover('hide');
+// 		});
 		$('#annotate-button').remove();
 	},
 	
@@ -39,17 +43,18 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 		var currentSelection = window.getSelection().toString();
 		
 		document.designMode = "on";
-		document.execCommand("CreateLink", false, "/annotations/unsaved-ann");
+		document.execCommand("CreateLink", false, "/unsaved-ann");
 		document.designMode = "off";
 
-		
 		var annotations = this.model.get('annotations');
-		annotations.create({}, {
+		var songId = window.location.pathname.substring(7)
+		
+		annotations.create({song_id: songId}, {
 			success: function () {
 				annotations.sort();
 				var annotation = annotations.last();
 		
-				$('a[href$="/annotations/unsaved-ann"]').attr("href", "annotations/" + annotation.id)
+				$('a[href$="/unsaved-ann"]').attr("href", "/" + annotation.id)
 				
 				$('#text-to-annotate').html("<blockquote><em>" + currentSelection + "</em></blockquote>");
 				$("#annotation_body").val('');
@@ -64,36 +69,71 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	removeAnnotationLink: function () {
 		$('#new-annotation-modal').modal('hide');
 		var annotationId = this.model.get('annotations').last().id;
-		var linkString = 'a[href="annotations/' + annotationId + '"]';
+		var linkString = 'a[href="/' + annotationId + '"]';
 		$(linkString).contents().unwrap();
 		this.model.get('annotations').last().destroy();	
 	},
 	
 	submitNewAnnotation: function (event) {
 		event.preventDefault();
-		$('#new-annotation-modal').modal('hide')
-	},
-	
-	submitNewAnnotation: function (event) {
-		event.preventDefault();
+		var annotationForm = $(event.currentTarget).serializeJSON().annotation;
 		$('#new-annotation-modal').modal('hide');
 		var songLyrics = $('#song-lyrics').html();
-		var annotation = this.model.get('annotations').last();
-		annotation.save({
-			body: $("#annotation_body").val(),
-			song_id: window.location.pathname.substring(7)
-		})
-		debugger
-		this.model.save({body: songLyrics});	
+		var annotations = this.model.get('annotations');
+
+		annotations.last().save(annotationForm);
 		
-		$('a[href="annotations/' + annotation.id + '"]').popover({
-			content: "" + annotation.get("body"),
-			// trigger: "hover",
-			html: true
-		});
+		var that = this;
+		this.model.save({body: songLyrics}, {
+			success: function () {
+				//this seems a bit hacky. Better way to preserve annotation on save?
+				that.model.attributes.annotations = annotations;
+			}
+		});	
 		
-		$('a').click(function (event) {
+		this._initializeLinks();
+	},
+	
+	_noAnnotationPresent : function (selection) {
+		var html;
+		//taken from 
+		//http://stackoverflow.com/questions/5643635/
+		//how-to-get-selected-html-text-with-javascript
+		if (selection.rangeCount) {
+        var container = document.createElement("div");
+        for (var i = 0, len = selection.rangeCount; i < len; ++i) {
+            container.appendChild(selection.getRangeAt(i).cloneContents());
+        }
+        html = container.innerHTML;
+    }
+		if (html.indexOf("<a") == -1) {
+			return true;
+		} else {
+			return false;
+		}
+	},
+	
+	_displayAnnotationButton: function () {
+		document.designMode = "on";
+		document.execCommand("CreateLink", false, "/dummy-link");
+		var el = "<span id='annotate-button'>Annotate</span>";
+		$(el).insertAfter('a[href$="/dummy-link"]');
+		document.execCommand("unlink", false)
+		document.designMode = "off";
+	},
+	
+	_initializeLinks: function () {
+		$('#song-lyrics').children().click( function (event) {
 			event.preventDefault();
+		});
+	
+		//make loaded annotations work
+		this.model.get("annotations").each(function (annotation) {
+			$('a[href="/' + annotation.id + '"]').popover({
+				content: "" + annotation.get("body"),
+				html: true
+			});
+			$('a[href="/' + annotation.id + '"]').attr("class", "popover-link");
 		});
 	}
 

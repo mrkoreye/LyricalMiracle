@@ -11,7 +11,7 @@ class SongsController < ApplicationController
     song_lyrics = Sanitize.clean(html_lyrics, 
       :elements => ['a', 'br'],
       :attributes => {'a' => ['href', 'class']},
-      :protocols => {'a' => {'href' => ['http', 'https']}},
+      # :protocols => {'a' => {'href' => ['http', 'https']}},
       :remove_contents => true
     )
     @song.body = song_lyrics
@@ -39,6 +39,7 @@ class SongsController < ApplicationController
     @song.body = @song.body.gsub("\r\n", "<br>")
     @song.body = @song.body.gsub("\n", "")
     @song.body = @song.body.gsub("\t", "")
+    @song.body = @song.body.gsub("\\", "\\\\")
     
     if @song.save
       render :json => @song
