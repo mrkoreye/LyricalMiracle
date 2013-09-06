@@ -31,4 +31,5 @@ capybara-*.html
 **.orig
 rerun.txt
 pickle-email-*.html
+config/initializers/secret_token.rb
 >>>>>>> c45695d7e2afadbb207e1f5f36b76c105e5d045b
