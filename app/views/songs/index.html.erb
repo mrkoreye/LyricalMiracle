@@ -2,8 +2,3 @@
 <%= link_to song.title, song_url(song) %>
 <% end %>
 
-<%= semantic_form_for @song do |f| %>
-  <%= f.inputs do %>
-    <%= f.input :body, :as => :rich, :config => {:allow_embeds => true} %>
-  <% end %>
-<% end %>

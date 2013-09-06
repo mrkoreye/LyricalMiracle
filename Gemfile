@@ -5,6 +5,7 @@ gem 'rails', '3.2.13'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'debugger'
 end
 
 group :assets do
@@ -26,8 +27,10 @@ gem 'omniauth'
 gem 'rabl'
 gem 'ejs'
 
-
-gem 'formtastic'
 gem 'rich'
+gem 'figaro'
 
-gem 'debugger'
+gem 'paperclip'
+gem 'kaminari'
+gem 'aws-sdk'
+

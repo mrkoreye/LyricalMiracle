@@ -36,4 +36,15 @@ LyricalMiracle::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+  
+  #paperclip
+  config.paperclip_defaults = {
+    :storage => :s3,
+    :s3_host_name => "s3-us-west-1.amazonaws.com",
+    :s3_credentials => {
+      :bucket => ENV["AMAZON_BUCKET_NAME"],
+      :access_key_id => ENV["AMAZON_KEY_ID"],
+      :secret_access_key => ENV["AMAZON_KEY_SECRET"]
+    }
+  }
 end
