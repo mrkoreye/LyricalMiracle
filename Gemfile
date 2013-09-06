@@ -25,3 +25,9 @@ gem 'omniauth'
 
 gem 'rabl'
 gem 'ejs'
+
+
+gem 'formtastic'
+gem 'rich'
+
+gem 'debugger'

@@ -1,6 +1,6 @@
 class Annotation < ActiveRecord::Base
   attr_accessible :body, :song_id, :user_id
-  before_save :sanitize_body
+  #before_save :sanitize_body
   
   belongs_to :user
   belongs_to :song
