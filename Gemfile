@@ -30,6 +30,7 @@ gem 'ejs'
 gem 'rich'
 gem 'figaro'
 
+
 gem 'paperclip'
 gem 'kaminari'
 gem 'aws-sdk'

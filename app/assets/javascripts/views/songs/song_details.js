@@ -3,7 +3,6 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	events: {
 		"mouseup #song-lyrics": "addAnnotationButton",
 		"mousedown #annotate-button": "showAnnotationForm",
-		"mousedown #song-lyrics": "removeAnnotationButtonPopover",
 		"click #new-annotation-modal-close": "removeAnnotationLink",
 		"submit #new-annotation": "submitNewAnnotation"
 	},
@@ -12,15 +11,12 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	
 	render: function () {
 		this.$el.html(this.template());
-
-		CKEDITOR.replace(this.$el.find('#annotation_body').get(0), {"height":300,"stylesSet":[],"extraPlugins":"stylesheetparser,richfile,MediaEmbed,smiley","removePlugins":"scayt,menubutton,image,forms","contentsCss":"/assets/rich/editor.css","removeDialogTabs":"link:advanced;link:target","startupOutlineBlocks":false,"forcePasteAsPlainText":true,"format_tags":"h3;p;pre","toolbar": [['Bold','Italic','Underline','Subscript','Superscript'],[ 'NumberedList','BulletedList','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight', 'Smiley'],['Link', 'Unlink'], ['MediaEmbed','richImage']],"language":"en","richBrowserUrl":"/rich/files/","uiColor":"#f4f4f4","allowed_styles":["thumb","rich_thumb","original"],"default_style":"thumb","insert_many":false,"allow_document_uploads":false,"allow_embeds":true,"placeholder_image":"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==","preview_size":"100px","hidden_input":false});
-		
+		this._insertRichTextEditor();
 		return this;
 	},
 	
 	addAnnotationButton: function () {
 		var selection = window.getSelection();
-		
 		
 		if (!selection.isCollapsed) {
 			var parent_id = selection.anchorNode.parentNode.id;
@@ -32,21 +28,11 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 		};
 	},
 	
-	removeAnnotationButtonPopover: function () {
-		// $('a').not(this).popover('hide');
-	
-		// $('.popover-link').not(this).popover('hide');
-		// $('.popover-link').on('click', function (e) {
-// 		    $('a').not(this).popover('hide');
-// 		});
-		$('#annotate-button').remove();
-	},
-	
 	showAnnotationForm: function () {
 		var currentSelection = window.getSelection().toString();
 		
 		document.designMode = "on";
-		document.execCommand("CreateLink", false, "/unsaved-ann");
+		document.execCommand("CreateLink", false, "unsaved-ann");
 		document.designMode = "off";
 
 		var annotations = this.model.get('annotations');
@@ -57,10 +43,9 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 				annotations.sort();
 				var annotation = annotations.last();
 		
-				$('a[href$="/unsaved-ann"]').attr("href", "/" + annotation.id)
-				
-				$('#text-to-annotate').html("<blockquote><em>" + currentSelection + "</em></blockquote>");
-				$("#annotation_body").val('');
+				$('a[href$="unsaved-ann"]').attr("href", annotation.id)
+				$('#text-to-annotate').html("<blockquote><em>" 
+											+ currentSelection + "</em></blockquote>");
 			}
 		});
 		
@@ -72,21 +57,23 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	removeAnnotationLink: function () {
 		$('#new-annotation-modal').modal('hide');
 		var annotationId = this.model.get('annotations').last().id;
-		var linkString = 'a[href="/' + annotationId + '"]';
+		var linkString = 'a[href="' + annotationId + '"]';
 		$(linkString).contents().unwrap();
 		this.model.get('annotations').last().destroy();	
 	},
 	
 	submitNewAnnotation: function (event) {
 		event.preventDefault();
-		var annotationForm = $(event.currentTarget).serializeJSON().annotation;
+		var that = this;
 		$('#new-annotation-modal').modal('hide');
-		var songLyrics = $('#song-lyrics').html();
+		//clears the text editor
+		CKEDITOR.instances.annotation_body.setData(' ');
+		
+		var annotationForm = $(event.currentTarget).serializeJSON().annotation;
 		var annotations = this.model.get('annotations');
-
 		annotations.last().save(annotationForm);
 		
-		var that = this;
+		var songLyrics = $('#song-lyrics').html();
 		this.model.save({body: songLyrics}, {
 			success: function () {
 				//this seems a bit hacky. Better way to preserve annotation on save?
@@ -118,9 +105,9 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	
 	_displayAnnotationButton: function () {
 		document.designMode = "on";
-		document.execCommand("CreateLink", false, "/dummy-link");
+		document.execCommand("CreateLink", false, "dummy-link");
 		var el = "<span id='annotate-button'>Annotate</span>";
-		$(el).insertAfter('a[href$="/dummy-link"]');
+		$(el).insertAfter('a[href$="dummy-link"]');
 		document.execCommand("unlink", false)
 		document.designMode = "off";
 	},
@@ -132,12 +119,17 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	
 		//make loaded annotations work
 		this.model.get("annotations").each(function (annotation) {
-			$('a[href="/' + annotation.id + '"]').popover({
+			$('a[href="' + annotation.id + '"]').popover({
 				content: "" + annotation.get("body"),
-				html: true
+				html: true,
 			});
-			$('a[href="/' + annotation.id + '"]').attr("class", "popover-link");
+			$('a[href="' + annotation.id + '"]').attr("class", "popover-link");
 		});
+	},
+	
+	_insertRichTextEditor: function () {
+		//these are the settings to manually swap the textare with the text editor
+		CKEDITOR.replace(this.$el.find('#annotation_body').get(0), {"height":300,"stylesSet":[],"extraPlugins":"stylesheetparser,richfile,MediaEmbed,smiley","removePlugins":"scayt,menubutton,image,forms","contentsCss":"/assets/rich/editor.css","removeDialogTabs":"link:advanced;link:target","startupOutlineBlocks":false,"forcePasteAsPlainText":true,"format_tags":"h3;p;pre","toolbar": [['Bold','Italic','Underline','Subscript','Superscript'],[ 'NumberedList','BulletedList','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight', 'Smiley'],['Link', 'Unlink'], ['MediaEmbed','richImage']],"language":"en","richBrowserUrl":"/rich/files/","uiColor":"#f4f4f4","allowed_styles":["thumb","rich_thumb","original"],"default_style":"thumb","insert_many":false,"allow_document_uploads":false,"allow_embeds":true,"placeholder_image":"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==","preview_size":"100px","hidden_input":false});
 	}
 
 });

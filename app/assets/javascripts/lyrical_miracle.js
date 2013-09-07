@@ -9,6 +9,7 @@ window.LyricalMiracle = {
 		// Need to go over this regarding cross site scripting
 		// div = $('<div><div>');
 	// 	div.html($('#bootstrapped-song').html());
+
 		songData = JSON.parse($('#bootstrapped-song').html());
 		
 		song = new LyricalMiracle.Models.Song(songData, {parse: true});

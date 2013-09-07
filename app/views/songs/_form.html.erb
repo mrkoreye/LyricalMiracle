@@ -1,0 +1,22 @@
+<form action="<%= songs_url %>" method="post" role="form">
+	<input type="hidden" name="authenticity_token"
+											 value="<%= form_authenticity_token %>">
+	
+  <div class="form-group">
+		<label for="song_title">Title</label>
+		<input class="form-control" type="text" id="song_title" name="song[title]" value="<%= song.title %>">
+  </div>
+  <div class="form-group">
+		<label for="song_artist">Artist</label>
+		<input class="form-control" type="text" id="song_artist" 						                   name="song[artist]"value="<%= song.artist %>">
+  </div>
+  <div class="form-group">
+		<label for="song_album">Album</label>
+		<input class="form-control" type="text" id="song_album" name="song[album_title]" value="<%= song.album_title %>">
+  </div>
+	<div class="form-group">
+		<label for="song_lyrics">Lyrics</label>
+		<textarea class="form-control" cols="100" rows="10" id="song_lyrics_form" name="song[body]"></textarea>
+	</div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>

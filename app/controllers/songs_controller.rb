@@ -7,27 +7,23 @@ class SongsController < ApplicationController
   end
   
   def show
-    #need to sanitize each item because I am using .html()
     @song = Song.find(params[:id])
-    html_lyrics = @song.body
-    song_lyrics = Sanitize.clean(html_lyrics, 
-      :elements => ['a', 'br'],
-      :attributes => {'a' => ['href', 'class']},
-      # :protocols => {'a' => {'href' => ['http', 'https']}},
-      :remove_contents => true
-    )
-    @song.body = song_lyrics
   end
   
   def new
+    @song = Song.new
     render :new
+  end
+  
+  def edit
+    @song = Song.find(params[:id])
+    render :edit
   end
   
   def create
     @song = Song.new(params[:song])
-    @song.body = @song.body.gsub("\r\n", "<br>")
-    @song.body = @song.body.gsub("\n", "")
-    @song.body = @song.body.gsub("\t", "")
+    @song.clean_lyrics_create
+    @song.body.squish
     
     if @song.save
       redirect_to song_url(@song)
@@ -36,16 +32,42 @@ class SongsController < ApplicationController
   
   def update
     @song = Song.find(params[:id])
-    @song.body = params[:body]
+    url_end = request.url.split("/").last
     
-    @song.body = @song.body.gsub("\r\n", "<br>")
-    @song.body = @song.body.gsub("\n", "")
-    @song.body = @song.body.gsub("\t", "")
-    @song.body = @song.body.gsub("\\", "\\\\")
-    
-    if @song.save
+    if url_end == "edit"
+      html_body = params[:body]
+      
+      @song.body = html_body
+      save_song(@song)
       render :json => @song
+    else
+      new_song = Song.new(:body => params[:body])
+      old_lyrics = @song.clean_lyrics_fully_no_space
+      new_lyrics_stripped = new_song.clean_lyrics_fully_no_space
+    
+      if old_lyrics == new_lyrics_stripped
+        @song.body = params[:body]
+        save_song(@song)
+        render :json => @song
+      else
+        render :json => "something went wrong"
+      end
     end
   end
- 
+  
+  
+  def save_song(song)
+    song.clean_lyrics_update
+    song.body.squish
+    song.save
+  end
+  
+  # def markdown(text)
+  #   markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(
+  #     :hard_wrap => true,
+  #     :no_styles => true
+  #   ))
+  #   markdown.render(text)
+  # end
+  
 end

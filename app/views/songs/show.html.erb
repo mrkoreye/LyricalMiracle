@@ -5,6 +5,12 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 	  LyricalMiracle.initialize();
+
+		$('body').mousedown( function () {
+			$('#annotate-button').remove();	
+			$('.popover-link').popover('hide');
+		});
+		
 	});
 </script>
 
