@@ -16,11 +16,11 @@
 	background-color: #FFFF00;
 	border-radius: 5px;
 	
-	border-top-color: rgba(200, 200, 200, 0.0980392);
-	border-right-color: rgba(200, 200, 200, 0.0980392);
-	border-bottom-color: rgba(200, 200, 200, 0.14902);
-	border-left-color: rgba(200, 200, 200, 0.0980392);
-	
+//	border-top-color: rgba(200, 200, 200, 0.0980392);
+//	border-right-color: rgba(200, 200, 200, 0.0980392);
+//	border-bottom-color: rgba(200, 200, 200, 0.14902);
+//	border-left-color: rgba(200, 200, 200, 0.0980392);
+	border-color: #FFFF00;
 	border-style: solid;
 	height: 27px;
 	font-weight: bold;
@@ -30,14 +30,15 @@
 }
 
 #annotate-button:hover {
-	background-color: #EEEE00;
+	background-color: #f6ef2a;
+	border-color: #f6ef2a;
 }
 
 #annotate-button:after {
   position: absolute;
   display: block;
   content: "";  
-  border-color: #EEEE00 transparent transparent transparent;
+  border-color: #FFFF00 transparent transparent transparent;
   border-style: solid;
   border-width: 10px;
   height:0;
@@ -48,11 +49,16 @@
 }
 
 #annotate-button:hover:after {
-	border-color: #EEEE00 transparent transparent transparent;
+	border-color: #f6ef2a transparent transparent transparent;
 }
 
-.annotation:hover {
-	
+.popover-link:link {
+	text-decoration: none;
+}
+
+.popover-link:hover {
+	background-color:#F4FA58;
+	color: #000000;
 }
 
 .popover {
@@ -71,4 +77,8 @@
       -ms-transition: opacity 0.0s linear;
        -o-transition: opacity 0.0s linear;
           transition: opacity 0.0s linear;
+}
+
+#song-lyrics {
+	font-size: 18px;
 }

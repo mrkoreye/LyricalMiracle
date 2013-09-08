@@ -1,0 +1,30 @@
+<% title = ["L","y","r","i","c","a","l","M","i","r","a","c","l","e"]%>
+
+<div class="container">
+	<div id="index-title-container">
+		<% title.each_with_index do |chr, idx| %>
+		<% if idx == 0 || idx == 7 %>
+			<div class="index-title-chunk"> 
+		<%end%>
+		<span class="index-title" id="index-title-<%=idx%>"><%=chr%></span>
+		<% if idx == 6 || idx == 13 %>
+			</div> 
+		<%end%>
+		<% end %>
+	</div>
+	<h3>Discover the meaning of lyrics, add what you know, and see what others are saying. Get started by browsing or searching for you favorite song.
+	</h3>
+</div>
+
+
+<script>
+$(document).ready(function () {
+	for(var i = 0; i < 14; i++) {
+		$('#index-title-' + i).on('mouseover', function () {
+			var colors = ['red', 'yellow', 'pink', 'green', 'blue'];
+			var rand = Math.floor(Math.random() * 6);
+			$(this).attr("class", "index-title " + colors[rand]);
+		});
+	}
+})
+</script>

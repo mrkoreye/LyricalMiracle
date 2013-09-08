@@ -44,7 +44,7 @@ class SongsController < ApplicationController
       new_song = Song.new(:body => params[:body])
       old_lyrics = @song.clean_lyrics_fully_no_space
       new_lyrics_stripped = new_song.clean_lyrics_fully_no_space
-    
+
       if old_lyrics == new_lyrics_stripped
         @song.body = params[:body]
         save_song(@song)

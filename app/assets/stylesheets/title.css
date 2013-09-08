@@ -1,0 +1,29 @@
+.index-title-chunk {
+	display:inline-block;
+}
+
+.index-title {
+	font-size: 125px;
+	font-weight: bold;
+	cursor: default;
+}
+
+.index-title.red {
+	color: #FF3333;
+}
+
+.index-title.pink {
+	color: #CC3366;
+}
+
+.index-title.yellow {
+	color: #FFFF33;
+}
+
+.index-title.green {
+	color: #41B649;
+}
+
+.index-title.blue{
+	color: #336699;
+}

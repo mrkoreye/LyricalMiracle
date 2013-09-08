@@ -18,3 +18,7 @@ img.left {
 img.right {
 	float: right;
 }
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}

@@ -30,6 +30,6 @@ class Song < ActiveRecord::Base
       :elements => [],
       :remove_contents => false
     )
-    clean_lyrics.gsub(/\s+/, "")
+    clean_lyrics.gsub(/\s+/, "").gsub(/\n/, "").gsub(/\r/, "")
   end
 end

@@ -1,12 +1,6 @@
-<h1>Add a new Song</h1>
+<div class="container">
+	<h1>Add a new Song</h1>
 
-<%= render :partial => "form", :locals => { :song =>  @song } %>
+	<%= render :partial => "form", :locals => { :song =>  @song } %>
+</div>
 
-<script>
-$(document).ready( function() { 
-
-	CKEDITOR.replace($('#song_lyrics_form').get(0), {"height":300,"stylesSet":[],"extraPlugins":"stylesheetparser,richfile,MediaEmbed,smiley","enterMode": CKEDITOR.ENTER_BR,"removePlugins":"scayt,menubutton,image,forms","contentsCss":"/assets/rich/editor.css","removeDialogTabs":"link:advanced;link:target","startupOutlineBlocks":false,"forcePasteAsPlainText":true,"format_tags":"h3;p;pre","toolbar": [],"language":"en","richBrowserUrl":"/rich/files/","uiColor":"#f4f4f4","allowed_styles":["thumb","rich_thumb","original"],"default_style":"thumb","insert_many":false,"allow_document_uploads":false,"allow_embeds":false,"placeholder_image":"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==","preview_size":"100px","hidden_input":false});
-
-	CKEDITOR.instances.song_lyrics_form.setData(' ');
-})
-</script>
