@@ -3,6 +3,7 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	events: {
 		"mouseup #song-lyrics": "addAnnotationButton",
 		"mousedown #annotate-button": "showAnnotationForm",
+		"mousedown .edit-annotation-link": "showEditAnnotationForm",
 		"click #new-annotation-modal-close": "removeAnnotationLink",
 		"submit #new-annotation": "submitNewAnnotation"
 	},
@@ -11,7 +12,7 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	
 	render: function () {
 		this.$el.html(this.template());
-		this._insertRichTextEditor();
+		// this._insertRichTextEditor();
 		return this;
 	},
 	
@@ -52,6 +53,29 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 		$('#new-annotation-modal').modal({
 			backdrop: false
 		});
+	},
+	
+	showEditAnnotationForm: function () {
+		var editAnnotationView = new LyricalMiracle.Views.EditAnnotationsIndex({model: this.model});
+		this.$el.append(editAnnotationView.render().$el);
+		// this._insertRichTextEditor();
+		
+		var id = parseInt($(event.target).attr("id").substring(11));
+		var annotation = this.model.get('annotations').findWhere({id: id});
+		
+		
+		var lyric = $('a[href$=' + id + ']').text();
+		$('#text-to-annotate').html("<blockquote><em>" 
+									+ lyric + "</em></blockquote>");
+								
+		CKEDITOR.instances.annotation_body.setData(annotation.get('body'));
+							
+		$('#edit-annotation-modal').modal({
+			backdrop: false,
+		});
+		
+		debugger
+		
 	},
 	
 	removeAnnotationLink: function () {
@@ -122,12 +146,16 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 			$('a[href="' + annotation.id + '"]').popover({
 				content: "" + annotation.get("body"),
 				html: true,
+				title: "<a class='edit-annotation-link' id='annotation-" + annotation.id + "'>edit</a>"
 			});
 			$('a[href="' + annotation.id + '"]').attr("class", "popover-link");
 		});
 	},
 	
 	_insertRichTextEditor: function () {
+		if (CKEDITOR.instances.annotation_body) {
+			CKEDITOR.instances.annotation_body.destroy();
+		} 
 		//these are the settings to manually swap the textare with the text editor
 		CKEDITOR.replace(this.$el.find('#annotation_body').get(0), {"height":300,"stylesSet":[],"extraPlugins":"stylesheetparser,richfile,MediaEmbed,smiley","removePlugins":"scayt,menubutton,image,forms,elementspath,magicline","contentsCss":"/assets/rich/editor.css","removeDialogTabs":"link:advanced;link:target","startupOutlineBlocks":false,"forcePasteAsPlainText":true,"format_tags":"h3;p;pre","toolbar": [['Bold','Italic','Underline','Subscript','Superscript'],[ 'NumberedList','BulletedList','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight', 'Smiley'],['Link', 'Unlink'], ['MediaEmbed','richImage']],"language":"en","richBrowserUrl":"/rich/files/","uiColor":"#f4f4f4","allowed_styles":["thumb","rich_thumb","original"],"default_style":"thumb","insert_many":false,"allow_document_uploads":false,"allow_embeds":true,"placeholder_image":"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==","preview_size":"100px","hidden_input":false});
 	}

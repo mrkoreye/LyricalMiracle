@@ -66,6 +66,17 @@
 	max-width: 800px;
 }
 
+.popover-title {
+  padding: 3px 3px 3px 3px;
+  margin: 0;
+  font-size: 11px;
+  font-weight: normal;
+	text-align: right;
+  line-height: 10px;
+  background-color: #FFFFFF;
+  border-bottom: 0px solid #ebebeb;
+}
+
 .popover.in {
 	z-index: 1030;
 }
@@ -81,4 +92,8 @@
 
 #song-lyrics {
 	font-size: 18px;
+}
+
+.edit-annotation-link {
+	cursor: pointer;
 }
