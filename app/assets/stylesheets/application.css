@@ -13,5 +13,6 @@
 *= require bootstrap
 *= require annotations
 *= require title
+*= require login
  */
 /*body { padding-top: 60px; } */

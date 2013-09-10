@@ -35,17 +35,16 @@
 		      </div>
 		      <button type="submit" class="btn btn-default">Submit</button>
 		    </form>
-		    <ul class="nav navbar-nav navbar-right">
-		      <li><a href="#">Link</a></li>
-		      <li class="dropdown">
-		        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-		        <ul class="dropdown-menu pull-right">
-		          <li><a href="#">Action</a></li>
-		          <li><a href="#">Another action</a></li>
-		          <li><a href="#">Something else here</a></li>
-		          <li><a href="#">Separated link</a></li>
-		        </ul>
-		      </li>
+		    <ul id="authentication-bar" class="nav navbar-nav navbar-right">
+					<% if user_signed_in? %>
+		      	<li><a href="#" id="user-email"><%= current_user.email %></a></li>
+						<li><a href="#" id="log-out">Log Out</a></li>
+						<li><a href="#" class="invisible"id="log-in">Log In</a></li>
+					<% else %>
+		      	<li><a href="#" class="invisible" id="user-email"></a></li>
+						<li><a href="#" class="invisible" id="log-out">Log Out</a></li>
+						<li><a href="#" id="log-in">Log In</a></li>
+					<% end %>
 		    </ul>
 		  </div><!-- /.navbar-collapse -->
 		</nav>
@@ -57,9 +56,95 @@
 		<div id="main-container">
 	  	<%= yield %>
 		</div>
-
 	</div>
-
 </body>
-
 </html>
+
+
+<div class="modal" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header no-line">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+				<ul class="nav nav-tabs">
+				  <li class="active">
+						<a href="#login-form-content" data-toggle="tab">Log In</a>
+					</li>
+				  <li><a href="#sign-up-form-content" data-toggle="tab">Sign up!</a></li>
+				</ul>
+       
+			  <div id="login-modal-body" class="modal-body">
+       
+				<div class="tab-content">
+				  <div class="tab-pane active" id="login-form-content">
+						<form role="form" id="login-form">
+							<div class="form-group">
+								<label for="user_email">Email</label>
+								<input class="form-control" type="text" name="user[email]" id="user_email" placeholder="email">
+							</div>
+							<div class="form-group">
+								<label for="user_password">Password</label>
+								<input class="form-control" type="password" id="user_password" name="user[password]" placeholder="password">
+							</div>
+			        <div class="modal-footer">
+			          <button type="submit" class="btn btn-primary">Submit</button>
+			        </div>
+						</form>
+					</div>
+				  <div class="tab-pane" id="sign-up-form-content">
+						<form id="signup-form">
+			        <div class="modal-footer">
+			          <button type="submit" class="btn btn-primary">Submit</button>
+			        </div>
+						</form>
+					</div>
+				</div>
+			</div>
+	
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+
+
+
+
+
+<script>
+$(document).ready(function () {
+	$('#log-out').click( function () {
+		$.ajax({
+		  url: "<%= destroy_user_session_url %>",
+		  type: "DELETE",
+		 	success: function (response) {
+				$('#user-email').addClass('invisible');
+				$('#log-out').addClass('invisible');
+				$('#log-in').removeClass('invisible');
+		  }
+		});	
+	});
+	$('#log-in').click(function () {
+		$('#login-modal').modal('show');	
+	});
+	$('#login-form').on('submit', function (event) {
+		event.preventDefault();
+		
+		var userInfo = $('#login-form').serializeJSON().user;
+		var data = {remote: true, user: userInfo};
+		$.post('<%= user_session_url %>.json', data, function (resp) {
+			if(resp.success) {
+				$('#login-modal').modal('hide');
+				$('#login-modal-body')
+							.find("input[type=text], inout[type=password]").val("");
+				$('#user-email').removeClass('invisible').html('hey friend');
+				$('#log-out').removeClass('invisible');
+				$('#log-in').addClass('invisible');
+			} else {
+				console.log("failed authentication");
+			}	
+		});
+	});
+});
+</script>
