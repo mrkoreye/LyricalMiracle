@@ -39,7 +39,7 @@
 					<% if user_signed_in? %>
 		      	<li><a href="#" id="user-email"><%= current_user.email %></a></li>
 						<li><a href="#" id="log-out">Log Out</a></li>
-						<li><a href="#" class="invisible"id="log-in">Log In</a></li>
+						<li class="invisible"><a href="#" class="invisible" id="log-in">Log In</a></li>
 					<% else %>
 		      	<li><a href="#" class="invisible" id="user-email"></a></li>
 						<li><a href="#" class="invisible" id="log-out">Log Out</a></li>
@@ -114,11 +114,17 @@
 
 <script>
 $(document).ready(function () {
+	var authToken = "<%= form_authenticity_token %>";
 	$('#log-out').click( function () {
 		$.ajax({
 		  url: "<%= destroy_user_session_url %>",
+			data: { authenticity_token: '<%= form_authenticity_token %>' },
+			// beforeSend: function(xhr) {
+	// 			xhr.setRequestHeader('X-CSRF-Token', 						$('meta[name="csrf-token"]').attr('content'))
+	// 		},
 		  type: "DELETE",
 		 	success: function (response) {
+				console.log("i am in the delete");
 				$('#user-email').addClass('invisible');
 				$('#log-out').addClass('invisible');
 				$('#log-in').removeClass('invisible');
@@ -128,19 +134,21 @@ $(document).ready(function () {
 	$('#log-in').click(function () {
 		$('#login-modal').modal('show');	
 	});
+	
 	$('#login-form').on('submit', function (event) {
 		event.preventDefault();
 		
 		var userInfo = $('#login-form').serializeJSON().user;
-		var data = {remote: true, user: userInfo};
+		var data = {remote: true, authenticity_token: authToken, user: userInfo};
 		$.post('<%= user_session_url %>.json', data, function (resp) {
 			if(resp.success) {
 				$('#login-modal').modal('hide');
-				$('#login-modal-body')
-							.find("input[type=text], inout[type=password]").val("");
-				$('#user-email').removeClass('invisible').html('hey friend');
-				$('#log-out').removeClass('invisible');
+				$('#user-email').removeClass('invisible').html($('#user_email').val());
 				$('#log-in').addClass('invisible');
+				$('#log-out').removeClass('invisible');
+				$('#login-modal-body')
+							.find("input[type=text], input[type=password]").val("");
+				
 			} else {
 				console.log("failed authentication");
 			}	
