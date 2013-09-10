@@ -17,8 +17,9 @@ class Song < ActiveRecord::Base
     unclean_lyrics = self.body
     clean_lyrics = Sanitize.clean(unclean_lyrics, 
       :elements => ['a', 'br'],
-      :attributes => {'a' => ['href', 'class']},
-      :protocols => {'a' => {'href' => [:relative]}},
+      :attributes => {'a' => ['href', 'class', 'id']},
+      :add_attributes => { 'a' => { 'href' => '#'} },
+      # :protocols => {'a' => {'href' => ['#']}},
       :remove_contents => true
     )
     self.body = clean_lyrics

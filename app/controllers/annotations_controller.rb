@@ -1,7 +1,6 @@
 class AnnotationsController < ApplicationController
   def create
-    @annotation = Annotation.new
-    @annotation.song_id = params[:song_id]
+    @annotation = Annotation.new(params[:annotation])
     #add line that assigns the user_id
     @annotation.save
     render :json => @annotation
