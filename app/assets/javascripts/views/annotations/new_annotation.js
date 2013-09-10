@@ -36,19 +36,25 @@ LyricalMiracle.Views.NewAnnotation = Backbone.View.extend({
 				$('a[href$="unsaved-ann"]')
 					.attr("href", '#')
 					.attr("id", "popoverlink-" + model.id)
-					.attr("class", "popover-link");
+					.attr("class", "popover-link")
+					.popover({
+						content: model.get("body"),
+						html: true,
+						title: "<a class='edit-annotation-link' id='annotation-" + model.id + "'>edit</a>"
+					});
 			
 				var songLyrics = $('#song-lyrics').html();
 				that.model.save({body: songLyrics}, {
 					success: function () {
 						//this seems a bit hacky. Better way to preserve annotation on save?
-						that.model.attributes.annotations = annotations;
+						that.model.attributes.annotations = annotations;			
+						that.remove();
 					}
 				});
 			}
 		});
 		
-		this.remove();
+
 	},
 	
 	_insertRichTextEditor: function () {

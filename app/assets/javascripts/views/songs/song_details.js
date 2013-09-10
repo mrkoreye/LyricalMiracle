@@ -1,6 +1,7 @@
 LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	initialize: function () {
 		this.listenTo(this.model.get("annotations"), "change", this.render);
+		// this.listenTo(this.model, "change", this.render);
 	},
 	
 	events: {
@@ -13,6 +14,7 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	
 	render: function () {
 		this.$el.html(this.template());
+		console.log(" i am here");
 		this._initializeLinks();
 		return this;
 	},
@@ -39,6 +41,8 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 
 		var newAnnView = new LyricalMiracle.Views.NewAnnotation({model: this.model});
 		this.$el.append(newAnnView.render().$el);
+	
+		this.listenTo(newAnnView, "change", this.render);
 		
 		$('#new-annotation-modal').modal({
 			backdrop: false
