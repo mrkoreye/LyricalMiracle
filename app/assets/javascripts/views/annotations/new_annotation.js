@@ -48,13 +48,13 @@ LyricalMiracle.Views.NewAnnotation = Backbone.View.extend({
 					success: function () {
 						//this seems a bit hacky. Better way to preserve annotation on save?
 						that.model.attributes.annotations = annotations;			
-						that.remove();
+
 					}
 				});
 			}
 		});
 		
-
+		that.remove();
 	},
 	
 	_insertRichTextEditor: function () {

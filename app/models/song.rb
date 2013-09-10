@@ -22,7 +22,7 @@ class Song < ActiveRecord::Base
       # :protocols => {'a' => {'href' => ['#']}},
       :remove_contents => true
     )
-    self.body = clean_lyrics
+    self.body = clean_lyrics.strip
   end
   
   def clean_lyrics_fully_no_space
