@@ -2,14 +2,13 @@ class RegistrationsController < Devise::RegistrationsController
   include ApplicationsHelper
   
   def create
-    debugger
-    build_resource
+    build_resource(params[:user])
     
     if resource.save
       sign_in(:user, resource)
-      render :json => {:success => true}
+      render :json => {:resource => resource}
     else
-      render :json => {:success => false, :errors => resource.errors.full_messages}, :status => 422
+      render :json => {:errors => resource.errors.full_messages.to_sentence}, :status => 422
     end
   end
 end
