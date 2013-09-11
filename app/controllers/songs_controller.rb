@@ -62,12 +62,4 @@ class SongsController < ApplicationController
     song.save
   end
   
-  # def markdown(text)
-  #   markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(
-  #     :hard_wrap => true,
-  #     :no_styles => true
-  #   ))
-  #   markdown.render(text)
-  # end
-  
 end

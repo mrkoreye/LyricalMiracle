@@ -10,12 +10,8 @@ class SessionsController < Devise::SessionsController
     sign_in(scope, resource) unless warden.user(scope) == resource
     render :json => {:success => true, :auth_token => form_authenticity_token} and return
   end
-  
-  # def destroy
-#     render :json => {:success => true, :message => "you got destroyed"}
-#   end
 
   def failure
-    render :json => {:success => false, :errors => "Login failed. Please try again."} and return
+    render :json => {:success => false, :errors => "Login failed. Please try again."}, :status => 422
   end
 end

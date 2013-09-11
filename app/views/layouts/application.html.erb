@@ -39,7 +39,7 @@
 					<% if user_signed_in? %>
 		      	<li><a href="#" id="user-email"><%= current_user.email %></a></li>
 						<li><a href="#" id="log-out">Log Out</a></li>
-						<li class="invisible"><a href="#" class="invisible" id="log-in">Log In</a></li>
+						<li><a href="#" class="invisible" id="log-in">Log In</a></li>
 					<% else %>
 		      	<li><a href="#" class="invisible" id="user-email"></a></li>
 						<li><a href="#" class="invisible" id="log-out">Log Out</a></li>
@@ -94,6 +94,18 @@
 					</div>
 				  <div class="tab-pane" id="sign-up-form-content">
 						<form id="signup-form">
+							<div class="form-group">
+								<label for="sign_user_email">Email</label>
+								<input class="form-control" type="text" name="user[email]" id="sign_user_email" placeholder="email">
+							</div>
+							<div class="form-group">
+								<label for="sign_user_password">Password</label>
+								<input class="form-control" type="password" id="sign_user_password" name="user[password]" placeholder="password">
+							</div>
+							<div class="form-group">
+								<label for="sign_user_password_confirmation">Password Confirmation</label>
+								<input class="form-control" type="password" id="sign_user_password_confirmation" name="user[password_confirmation]" placeholder="password confirmation">
+							</div>
 			        <div class="modal-footer">
 			          <button type="submit" class="btn btn-primary">Submit</button>
 			        </div>
@@ -118,19 +130,15 @@ $(document).ready(function () {
 	$('#log-out').click( function () {
 		$.ajax({
 		  url: "<%= destroy_user_session_url %>",
-			data: { authenticity_token: '<%= form_authenticity_token %>' },
-			// beforeSend: function(xhr) {
-	// 			xhr.setRequestHeader('X-CSRF-Token', 						$('meta[name="csrf-token"]').attr('content'))
-	// 		},
 		  type: "DELETE",
 		 	success: function (response) {
-				console.log("i am in the delete");
 				$('#user-email').addClass('invisible');
 				$('#log-out').addClass('invisible');
 				$('#log-in').removeClass('invisible');
 		  }
 		});	
 	});
+	
 	$('#log-in').click(function () {
 		$('#login-modal').modal('show');	
 	});
@@ -139,7 +147,7 @@ $(document).ready(function () {
 		event.preventDefault();
 		
 		var userInfo = $('#login-form').serializeJSON().user;
-		var data = {remote: true, authenticity_token: authToken, user: userInfo};
+		var data = {remote: true, user: userInfo};
 		$.post('<%= user_session_url %>.json', data, function (resp) {
 			if(resp.success) {
 				$('#login-modal').modal('hide');
@@ -150,9 +158,30 @@ $(document).ready(function () {
 							.find("input[type=text], input[type=password]").val("");
 				
 			} else {
-				console.log("failed authentication");
+				$('#login-form-content').prepend('<div class="alert alert-warning 						alert-dismissable"><button type="button" class="close" 						 							data-dismiss="alert" aria-hidden="true">&times;</button>' + 						 resp.errors + '</div>')
 			}	
 		});
 	});
+	
+	$('#signup-form').on('submit', function (event) {
+		event.preventDefault();
+		
+		var userInfo = $('#signup-form').serializeJSON().user;
+		var data = {remote: true, user: userInfo};
+		$.post('<%= user_registration_url %>.json', data, function (resp) {
+			if(resp.success) {
+				$('#login-modal').modal('hide');
+				$('#user-email').removeClass('invisible').html($('#sign_user_email').val());
+				$('#log-in').addClass('invisible');
+				$('#log-out').removeClass('invisible');
+				$('#login-modal-body')
+							.find("input[type=text], input[type=password]").val("");
+				
+			} else {
+				$('#signup-form-content').prepend('<div class="alert alert-warning 						alert-dismissable"><button type="button" class="close" 						 							data-dismiss="alert" aria-hidden="true">&times;</button>' + 						 resp.errors + '</div>')
+			}	
+		});
+	});
+	
 });
 </script>
