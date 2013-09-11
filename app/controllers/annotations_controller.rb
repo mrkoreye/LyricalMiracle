@@ -1,4 +1,6 @@
 class AnnotationsController < ApplicationController
+  # before_filter :authenticate_user!
+  
   def create
     @annotation = Annotation.new(params[:annotation])
     #add line that assigns the user_id

@@ -1,0 +1,41 @@
+<div id="body-container">
+	<nav class="navbar navbar-default navbar-fixed">
+	  <div class="navbar-header">
+	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	      <span class="sr-only">Toggle navigation</span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	    <a class="navbar-brand" href="<%= root_url %>">LyricalMiracle</a>
+	  </div>
+	  <div class="collapse navbar-collapse">
+	    <ul class="nav navbar-nav">
+	      <li class="active"><a href="<%= new_song_url %>">Add Song</a></li>
+	      <li class="dropdown">
+	        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Browse<b class="caret"></b></a>
+	        <ul class="dropdown-menu pull-left">
+	          <li><a href="<%= songs_url %>">Songs</a></li>
+	          <li><a href="#">Artists</a></li>
+	        </ul>
+	      </li>
+	    </ul>
+	    <form class="navbar-form navbar-left" role="search">
+	      <div class="form-group">
+	        <input type="text" class="form-control" placeholder="Search by song title or artist">
+	      </div>
+	      <button type="submit" class="btn btn-default">Submit</button>
+	    </form>
+	    <ul id="authentication-bar" class="nav navbar-nav navbar-right">
+				<% if current_user %>
+	      	<li><a href="#" id="user-email"><%= current_user.email %></a></li>
+					<li><a href="#" id="log-out">Log Out</a></li>
+					<li><a href="#" class="invisible" id="log-in">Log In</a></li>
+				<% else %>
+	      	<li><a href="#" class="invisible" id="user-email"></a></li>
+					<li><a href="#" class="invisible" id="log-out">Log Out</a></li>
+					<li><a href="#" id="log-in">Log In</a></li>
+				<% end %>
+	    </ul>
+	  </div><!-- /.navbar-collapse -->
+	</nav>

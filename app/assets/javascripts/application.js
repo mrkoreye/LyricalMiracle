@@ -16,6 +16,7 @@
 //= require backbone
 //= require serializeJSON
 //= require lyrical_miracle
+//= require typeahead
 
 //= require_tree ../templates
 //= require_tree ./models

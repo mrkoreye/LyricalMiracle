@@ -3,11 +3,12 @@ LyricalMiracle::Application.routes.draw do
   
   devise_for :users, :controllers => {
     :sessions => 'sessions', 
-    :registrations => 'registrations'
+    :registrations => 'registrations',
+    :omniauth_callbacks => 'omniauth_callbacks'
   }
 
   root :to => "index#index"
-  devise_for :users
+  # devise_for :users
   resources :songs
   resources :annotations
 end

@@ -1,0 +1,66 @@
+
+<div class="modal" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header no-line">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+				<ul class="nav nav-tabs">
+				  <li class="active">
+						<a href="#login-form-content" data-toggle="tab">Log In</a>
+					</li>
+				  <li><a href="#sign-up-form-content" data-toggle="tab">Sign up!</a></li>
+				</ul>
+       
+			  <div id="login-modal-body" class="modal-body">
+					<div id="login-errors">
+					</div>
+					<div id="google-sign-in">
+						<a href="<%= user_omniauth_authorize_path(:google_oauth2) %>">
+						<img src="/images/google_sign_in.png" alt="Sign in with Google" title="SIgn in with Google" height=60></a>
+					</div>
+					<br>
+					
+				<div class="tab-content">
+				  <div class="tab-pane active" id="login-form-content">
+						<small><em>or sign in with your Lyrical Miracle account:</em></small>
+						<form role="form" id="login-form">
+							<div class="form-group">
+								<label for="user_email">Email</label>
+								<input class="form-control" type="text" name="user[email]" id="user_email" placeholder="email">
+							</div>
+							<div class="form-group">
+								<label for="user_password">Password</label>
+								<input class="form-control" type="password" id="user_password" name="user[password]" placeholder="password">
+							</div>
+			        <div class="modal-footer">
+			          <button type="submit" class="btn btn-primary">Submit</button>
+			        </div>
+						</form>
+					</div>
+				  <div class="tab-pane" id="sign-up-form-content">
+						<small><em>or create a new Lyrical Miracle account:</em></small>
+						<form id="signup-form">
+							<div class="form-group">
+								<label for="sign_user_email">Email</label>
+								<input class="form-control" type="text" name="user[email]" id="sign_user_email" placeholder="email">
+							</div>
+							<div class="form-group">
+								<label for="sign_user_password">Password</label>
+								<input class="form-control" type="password" id="sign_user_password" name="user[password]" placeholder="password">
+							</div>
+							<div class="form-group">
+								<label for="sign_user_password_confirmation">Password Confirmation</label>
+								<input class="form-control" type="password" id="sign_user_password_confirmation" name="user[password_confirmation]" placeholder="password confirmation">
+							</div>
+			        <div class="modal-footer">
+			          <button type="submit" class="btn btn-primary">Submit</button>
+			        </div>
+						</form>
+					</div>
+				</div>
+			</div>
+	
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
