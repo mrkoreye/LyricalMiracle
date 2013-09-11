@@ -1,6 +1,8 @@
 class RegistrationsController < Devise::RegistrationsController
+  include ApplicationsHelper
   
   def create
+    debugger
     build_resource
     
     if resource.save
