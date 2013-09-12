@@ -1,9 +1,9 @@
 class AnnotationsController < ApplicationController
-  # before_filter :authenticate_user!
+  before_filter :authenticate_user!
   
   def create
     @annotation = Annotation.new(params[:annotation])
-    #add line that assigns the user_id
+    @annotation.user_id = current_user.id
     @annotation.save
     render :json => @annotation
   end

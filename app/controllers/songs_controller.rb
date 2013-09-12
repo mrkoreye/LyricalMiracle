@@ -4,7 +4,9 @@ class SongsController < ApplicationController
       @is_search = true
       @query = params[:song][:search_query]
       search = "%" + params[:song][:search_query] + "%"
-      @songs = Song.where("UPPER(title) LIKE UPPER(?) OR UPPER(artist) LIKE UPPER(?)", search, search)
+      @songs = Song.where(<<-SQL, search, search)
+        UPPER(title) LIKE UPPER(?) OR UPPER(artist) LIKE UPPER(?)
+        SQL
       render :index
     else  
       @songs = Song.all

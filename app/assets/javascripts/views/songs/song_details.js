@@ -1,12 +1,11 @@
 LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	initialize: function () {
 		this.listenTo(this.model.get("annotations"), "change", this.render);
-		// this.listenTo(this.model, "change", this.render);
 	},
 	
 	events: {
 		"mouseup #song-lyrics": "addAnnotationButton",
-		"mousedown #annotate-button": "showAnnotationForm",
+		"mousedown #annotate-button": "showNewAnnotationForm",
 		"mousedown .edit-annotation-link": "showEditAnnotationForm",
 	},
 	
@@ -14,7 +13,6 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	
 	render: function () {
 		this.$el.html(this.template());
-		console.log(" i am here");
 		this._initializeLinks();
 		return this;
 	},
@@ -32,42 +30,27 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 		};
 	},
 	
-	showAnnotationForm: function () {
-		var currentSelection = window.getSelection().toString();
-		
-		document.designMode = "on";
-		document.execCommand("CreateLink", false, "unsaved-ann");
-		document.designMode = "off";
-
-		var newAnnView = new LyricalMiracle.Views.NewAnnotation({model: this.model});
-		this.$el.append(newAnnView.render().$el);
-	
-		this.listenTo(newAnnView, "change", this.render);
-		
-		$('#new-annotation-modal').modal({
-			backdrop: false
-		});
+	showNewAnnotationForm: function () {
+		if (this._loggedIn()) {
+			this._showNewAnnotationForm();
+		} else {
+			$('#require-login-content').html('Adding an annotation requires log-in');
+			$('#require-login').modal('show');
+		}
 	},
 	
 	showEditAnnotationForm: function () {
-		var id = parseInt($(event.target).attr("id").substring(11));
-		var annotation = this.model.get('annotations').findWhere({id: id});
-		
-		var editAnnotationView = new LyricalMiracle.Views.EditAnnotation({model: annotation});
-		this.$el.append(editAnnotationView.render().$el);
-		
-		CKEDITOR.instances.annotation_body.setData(annotation.get('body'));
-		var lyric = $('#popoverlink-' + id).text();
-		$('#text-to-annotate').html("<blockquote><em>" 
-									+ lyric + "</em></blockquote>");
-		$('#edit-annotation-modal').modal({
-			backdrop: false,
-		});	
+		if (this._loggedIn()) {
+			this._showEditAnnotationForm();
+		} else {
+			$('#require-login-content').html('Editing an annotation requires log-in');
+			$('#require-login').modal('show');
+		}
 	},
 	
 	_noAnnotationPresent : function (selection) {
 		var html;
-		//taken from 
+		//inspired by 
 		//http://stackoverflow.com/questions/5643635/
 		//how-to-get-selected-html-text-with-javascript
 		if (selection.rangeCount) {
@@ -94,19 +77,60 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	},
 	
 	_initializeLinks: function () {
-		// $(this.$el).children().click( function (event) {
-	// 		event.preventDefault();
-	// 	});
 		var that = this;
 		//make loaded annotations work
 		this.model.get("annotations").each(function (annotation) {
-
+			var titleHtml =  "<a class='edit-annotation-link' id='annotation-";
 			that.$el.find('#popoverlink-' + annotation.id).popover({
 				content: annotation.get("body"),
 				html: true,
-				title: "<a class='edit-annotation-link' id='annotation-" + annotation.id + "'>edit</a>"
+				title: titleHtml + annotation.id + "'>edit</a>"
 			});
 		});
 	},
+	
+	_loggedIn: function () {
+		if ($('#log-in').attr("class") == 'invisible' ) {
+			return true;
+		} else {
+			return false;
+		}
+	},
+	
+	_showEditAnnotationForm: function () {
+		var id = parseInt($(event.target).attr("id").substring(11));
+		var annotation = this.model.get('annotations').findWhere({id: id});
+		var editAnnotationView = new LyricalMiracle.Views.EditAnnotation({
+			model: annotation
+		});
+		this.$el.append(editAnnotationView.render().$el);
+	
+		CKEDITOR.instances.annotation_body.setData(annotation.get('body'));
+		var lyric = $('#popoverlink-' + id).text();
+		$('#text-to-annotate').html("<blockquote><em>" 
+									+ lyric + "</em></blockquote>");
+		$('#edit-annotation-modal').modal({
+			backdrop: false,
+		});	
+	},
+	
+	_showNewAnnotationForm: function () {
+		var currentSelection = window.getSelection().toString();
+	
+		//creates pre-emptive link in song body in case selection changes
+		document.designMode = "on";
+		document.execCommand("CreateLink", false, "unsaved-ann");
+		document.designMode = "off";
+
+		var newAnnView = new LyricalMiracle.Views.NewAnnotation({
+			model: this.model
+		});
+		this.$el.append(newAnnView.render().$el);
+		this.listenTo(newAnnView, "change", this.render);
+	
+		$('#new-annotation-modal').modal({
+			backdrop: false
+		});
+	}
 	
 });
