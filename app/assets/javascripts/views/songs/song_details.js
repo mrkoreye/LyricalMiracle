@@ -6,7 +6,7 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	events: {
 		"mouseup #song-lyrics": "addAnnotationButton",
 		"mousedown #annotate-button": "showNewAnnotationForm",
-		"mousedown .edit-annotation-link": "showEditAnnotationForm",
+		"mousedown .edit-annotation-link": "showEditAnnotationForm"
 	},
 	
   template: JST['songs/details'],

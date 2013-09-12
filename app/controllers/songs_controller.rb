@@ -21,7 +21,6 @@ class SongsController < ApplicationController
   end
   
   def artists
-    debugger
     @artists = Song.pluck(:artist).uniq
     
     respond_to do |format|
@@ -50,39 +49,44 @@ class SongsController < ApplicationController
     
     if @song.save
       redirect_to song_url(@song)
+    else
+      flash[:errors] = []
+      flash.now[:errors] << @song.errors.full_messages.to_sentence
+      render :new
     end
   end
   
   def update
+    #originally had way to stop editing in DOM from song display page
+    #from getting saved, but removed because I thought it was overkill
+    #considering anyone is allowed to edit a song anyway
     @song = Song.find(params[:id])
-    url_end = request.url.split("/").last
-    
-    if url_end == "edit"
-      html_body = params[:body]
-      
-      @song.body = html_body
-      save_song(@song)
-      render :json => @song
-    else
-      new_song = Song.new(:body => params[:body])
-      old_lyrics = @song.clean_lyrics_fully_no_space
-      new_lyrics_stripped = new_song.clean_lyrics_fully_no_space
+    @song.body = params[:song][:body]
+    @song.title = params[:song][:title]
+    @song.artist = params[:song][:artist]
+    clean_song(@song)
 
-      if old_lyrics == new_lyrics_stripped
-        @song.body = params[:body]
-        save_song(@song)
-        render :json => @song
-      else
-        render :json => "something went wrong"
+    if @song.save
+      respond_to do |format|
+        format.json { render :json => @song }
+        format.html { redirect_to song_url(@song) }
+      end
+    else
+      respond_to do |format|
+        format.json { render :json => { :errors => @song.errors.full_messages } }
+        format.html do
+          flash[:errors] = []
+          flash.now[:errors] << @song.errors.full_messages.to_sentence
+          render :edit
+        end
       end
     end
   end
   
   
-  def save_song(song)
+  def clean_song(song)
     song.clean_lyrics_update
     song.body.squish
-    song.save
   end
   
 end

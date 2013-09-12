@@ -1,7 +1,16 @@
 
 <div class="container">
+	<% flash[:errors].try(:each) do |error|%>
+	<div class="alert alert-warning alert-dismissable">
+	  <button type="button" class="close" 
+						data-dismiss="alert" aria-hidden="true">&times;</button>
+		<%= error %>
+	</div>
+	<% end %>
 <h1>Edit <%= @song.title %> by <%= @song.artist %></h1>
 
+<form action="<%= song_url(@song) %>" method="post" role="form">
+	<input type="hidden" name="_method" value="put">
 <%= render :partial => "form", :locals => { :song =>  @song } %>
 </div>
 

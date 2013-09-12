@@ -1,6 +1,11 @@
 
 <div class="container">
 	<h1><%= song.escape("title")%> by <%= song.escape("artist") %></h1>
+	<small>
+		<em>Select text to make a new annotation</em> 
+		<a id="edit-song-link" href="/songs/<%= song.id %>/edit"> Edit Lyrics</a>
+	</small>
+	<br>
 	<br>
 	<div id='song-lyrics'>
 			<%= song.get("body") %>
