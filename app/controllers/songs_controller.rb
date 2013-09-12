@@ -1,9 +1,10 @@
 class SongsController < ApplicationController
   def index
-    if params[:song][:search_query]
+    if params[:song] && params[:song][:search_query]
       @is_search = true
+      @query = params[:song][:search_query]
       search = "%" + params[:song][:search_query] + "%"
-      @songs = Song.where("title LIKE ? OR artist LIKE ?", search, search)
+      @songs = Song.where("UPPER(title) LIKE UPPER(?) OR UPPER(artist) LIKE UPPER(?)", search, search)
       render :index
     else  
       @songs = Song.all
