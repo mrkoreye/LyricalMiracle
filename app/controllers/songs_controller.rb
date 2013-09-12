@@ -1,4 +1,6 @@
 class SongsController < ApplicationController
+  before_filter :authenticate_user!, :except => [:index, :artists, :show]
+  
   def index
     if params[:song] && params[:song][:search_query]
       @is_search = true

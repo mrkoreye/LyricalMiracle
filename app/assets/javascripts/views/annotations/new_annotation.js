@@ -24,37 +24,44 @@ LyricalMiracle.Views.NewAnnotation = Backbone.View.extend({
 	
 	submitNewAnnotation: function (event) {
 		event.preventDefault();
-		$('#new-annotation-modal').modal('hide');
-		
 		var that = this;
 		var annotations = this.model.get('annotations');
 		var annotationForm = $(event.currentTarget).serializeJSON().annotation;
+		var replaced = annotationForm.body.replace(/\s+|<\/p>|<p>|&nbsp;/, '');
 		
-		this.model.get("annotations").create(annotationForm, {
-			wait: true,
-			success: function (model) {
-				$('a[href$="unsaved-ann"]')
-					.attr("href", '#')
-					.attr("id", "popoverlink-" + model.id)
-					.attr("class", "popover-link")
-					.popover({
-						content: model.get("body"),
-						html: true,
-						title: "<a class='edit-annotation-link' id='annotation-" + model.id + "'>edit</a>"
+		if (replaced == '') {
+			$('#annotation-blank-error').html('<div class="alert alert-warning">Annotation cannot be blank</div>');
+		} else {
+			$('#new-annotation-modal').modal('hide');
+		
+			this.model.get("annotations").create(annotationForm, {
+				wait: true,
+				success: function (model) {
+					that._createNewPopover(model);
+					var songLyrics = $('#song-lyrics').html();
+					that.model.save({body: songLyrics}, {
+						success: function () {
+							//this seems a bit hacky. Better way to preserve annotation?
+							that.model.attributes.annotations = annotations;			
+						}
 					});
-			
-				var songLyrics = $('#song-lyrics').html();
-				that.model.save({body: songLyrics}, {
-					success: function () {
-						//this seems a bit hacky. Better way to preserve annotation on save?
-						that.model.attributes.annotations = annotations;			
-
-					}
-				});
-			}
-		});
-		
+				}
+			});
 		that.remove();
+		}
+	},
+	
+	_createNewPopover: function (model) {
+		var _begTitle = "<a class='edit-annotation-link' id='annotation-";
+		$('a[href$="unsaved-ann"]')
+			.attr("href", '#')
+			.attr("id", "popoverlink-" + model.id)
+			.attr("class", "popover-link")
+			.popover({
+				content: model.get("body"),
+				html: true,
+				title: _begTitle + model.id + "'>edit</a>"
+			});
 	},
 	
 	_insertRichTextEditor: function () {

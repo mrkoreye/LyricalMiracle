@@ -61,7 +61,8 @@ $(document).ready(function () {
 				$('#login-errors').html(' ');
 			},
 			error: function (resp) {
-						$('#login-errors').html('<div class="alert alert-warning 						alert-dismissable">' + resp.responseJSON.errors + '</div>')
+						$('#login-errors').html('<div class="alert alert-warning">' 
+						+ resp.responseJSON.errors + '</div>')
 			}	
 		});
 	});
@@ -82,5 +83,13 @@ $(document).ready(function () {
 		  header: '<h4>Artists</h4>'
 		}	
 	]);
+	
+	$('#add-song-button').on("click", function (event) {
+		if (!($('#log-in').attr("class") == 'invisible' )) {
+			event.preventDefault();
+			$('#require-login-content').html('Adding a song requires log-in');
+			$('#require-login').modal('show');
+		}
+	})
 	
 });

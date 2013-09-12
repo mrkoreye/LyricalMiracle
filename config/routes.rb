@@ -10,6 +10,7 @@ LyricalMiracle::Application.routes.draw do
   root :to => "index#index"
   # devise_for :users
   get "songs/artists", :to => "songs#artists"
+  
   resources :songs
   resources :annotations
   

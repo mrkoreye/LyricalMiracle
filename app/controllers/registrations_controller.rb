@@ -1,6 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
   include ApplicationsHelper
-  
+
   def create
     build_resource(params[:user])
     

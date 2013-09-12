@@ -14,11 +14,16 @@ LyricalMiracle.Views.EditAnnotation = Backbone.View.extend({
 	
 	submitEditAnnotation: function (event) {
 		event.preventDefault();
-		$('#edit-annotation-modal').modal('hide');
-		
 		var annotationForm = $(event.currentTarget).serializeJSON().annotation;
-		this.model.save(annotationForm);
-		this.remove();
+		var replaced = annotationForm.body.replace(/\s+|<\/p>|<p>|&nbsp;/, '')
+		
+		if (replaced == '') {
+			$('#annotation-blank-error').html('<div class="alert alert-warning">Annotation cannot be blank</div>');
+		} else {
+			$('#edit-annotation-modal').modal('hide');
+			this.model.save(annotationForm);
+			this.remove();
+		}
 	},
 	
 	_insertRichTextEditor: function () {

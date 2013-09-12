@@ -6,7 +6,8 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	events: {
 		"mouseup #song-lyrics": "addAnnotationButton",
 		"mousedown #annotate-button": "showNewAnnotationForm",
-		"mousedown .edit-annotation-link": "showEditAnnotationForm"
+		"mousedown .edit-annotation-link": "showEditAnnotationForm",
+		"click #edit-song-link": "requireLoginEdit"
 	},
 	
   template: JST['songs/details'],
@@ -44,6 +45,14 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 			this._showEditAnnotationForm();
 		} else {
 			$('#require-login-content').html('Editing an annotation requires log-in');
+			$('#require-login').modal('show');
+		}
+	},
+	
+	requireLoginEdit: function (event) {
+		if (!this._loggedIn()) {
+			event.preventDefault();
+			$('#require-login-content').html('Editing a song requires log-in');
 			$('#require-login').modal('show');
 		}
 	},
