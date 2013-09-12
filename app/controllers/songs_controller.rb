@@ -1,9 +1,29 @@
 class SongsController < ApplicationController
   def index
-    @songs = Song.all
+    if params[:song][:search_query]
+      @is_search = true
+      search = "%" + params[:song][:search_query] + "%"
+      @songs = Song.where("title LIKE ? OR artist LIKE ?", search, search)
+      render :index
+    else  
+      @songs = Song.all
+      @song = Song.last
+      @song_titles = Song.pluck(:title)
     
-    @song = Song.last
-    render :index
+      respond_to do |format|
+        format.html {render :index}
+        format.json { render :json => @song_titles.to_json }
+      end
+    end
+  end
+  
+  def artists
+    debugger
+    @artists = Song.pluck(:artist).uniq
+    
+    respond_to do |format|
+      format.json { render :json => @artists.to_json }
+    end
   end
   
   def show

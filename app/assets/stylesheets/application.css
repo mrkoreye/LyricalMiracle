@@ -14,5 +14,6 @@
 *= require annotations
 *= require title
 *= require login
+*= require navbar
  */
 /*body { padding-top: 60px; } */

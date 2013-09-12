@@ -11,18 +11,12 @@
 	  </div>
 	  <div class="collapse navbar-collapse">
 	    <ul class="nav navbar-nav">
-	      <li class="active"><a href="<%= new_song_url %>">Add Song</a></li>
-	      <li class="dropdown">
-	        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Browse<b class="caret"></b></a>
-	        <ul class="dropdown-menu pull-left">
-	          <li><a href="<%= songs_url %>">Songs</a></li>
-	          <li><a href="#">Artists</a></li>
-	        </ul>
-	      </li>
+	      <li><a href="<%= new_song_url %>">Add Song</a></li>
+	      <li><a href="<%= songs_url %>">All Songs</a></li>
 	    </ul>
-	    <form class="navbar-form navbar-left" role="search">
+	    <form class="navbar-form navbar-left" role="search" action="<%= songs_url %>" method="GET">
 	      <div class="form-group">
-	        <input type="text" class="form-control" placeholder="Search by song title or artist">
+	        <input id="song-search" name="song[search_query]" type="text" class="form-control search-bar" placeholder="Search by title or artist">
 	      </div>
 	      <button type="submit" class="btn btn-default">Submit</button>
 	    </form>

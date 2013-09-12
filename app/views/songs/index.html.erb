@@ -1,6 +1,7 @@
 <% @songs.sort_by! { |song| song.title }%>
 <div class="container">
-	<h1>All Songs</h1>
+	
+	<h1><%= @is_search.nil? ? "All Songs" : "Search Results" %></h1>
 	<h4>
 		<ul class="list-unstyled">
 			<% @songs.each do |song| %>

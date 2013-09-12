@@ -16,6 +16,7 @@
 //= require backbone
 //= require serializeJSON
 //= require lyrical_miracle
+//= require bootstrap
 //= require typeahead
 
 //= require_tree ../templates
@@ -24,6 +25,6 @@
 //= require_tree ./views
 //= require_tree ./routers
 //= require_tree .
-//= require bootstrap
+
 
 
