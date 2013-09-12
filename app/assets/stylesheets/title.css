@@ -27,3 +27,25 @@
 .index-title.blue{
 	color: #336699;
 }
+
+.panel-collapse {
+  border-top: 0px solid #dddddd;
+}
+
+.panel {
+  margin-bottom: 21px;
+  background-color: #ffffff;
+  border: 0px solid transparent;
+  border-radius: 0;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.intro-link:hover {
+	background-color:#F4FA58;
+	color: #000000;
+}
+
+.intro-link:link {
+	text-decoration: none;
+}
