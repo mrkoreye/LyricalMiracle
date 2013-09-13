@@ -35,8 +35,11 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 		if (this._loggedIn()) {
 			this._showNewAnnotationForm();
 		} else {
-			$('#require-login-content').html('Adding an annotation requires log-in');
-			$('#require-login').modal('show');
+			$('#login-modal-body')
+						.find("input[type=text], input[type=password]").val("");
+			$('#login-errors').text('Creating an annotation requires log-in');
+			$('#login-errors').removeClass('invisible');
+			$('#login-modal').modal('show');
 		}
 	},
 	
@@ -44,16 +47,22 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 		if (this._loggedIn()) {
 			this._showEditAnnotationForm();
 		} else {
-			$('#require-login-content').html('Editing an annotation requires log-in');
-			$('#require-login').modal('show');
+			$('#login-modal-body')
+						.find("input[type=text], input[type=password]").val("");
+			$('#login-errors').text('Editing an annotation requires log-in');
+			$('#login-errors').removeClass('invisible');
+			$('#login-modal').modal('show');
 		}
 	},
 	
 	requireLoginEdit: function (event) {
 		if (!this._loggedIn()) {
 			event.preventDefault();
-			$('#require-login-content').html('Editing a song requires log-in');
-			$('#require-login').modal('show');
+			$('#login-modal-body')
+						.find("input[type=text], input[type=password]").val("");
+			$('#login-errors').text('Editing a song requires log-in');
+			$('#login-errors').removeClass('invisible');
+			$('#login-modal').modal('show');
 		}
 	},
 	

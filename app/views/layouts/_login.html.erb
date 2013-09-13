@@ -13,8 +13,10 @@
 				</ul>
        
 			  <div id="login-modal-body" class="modal-body">
-					<div id="login-errors">
-					</div>
+					
+						<div id="login-errors" class="alert alert-warning">
+						</div>
+	
 					<div class="login-l" id="google-sign-in">
 						<a href="<%= user_omniauth_authorize_path(:google_oauth2) %>">
 						<img src="/images/google_sign_in.png" alt="Sign in with Google" title="SIgn in with Google" height=60></a>

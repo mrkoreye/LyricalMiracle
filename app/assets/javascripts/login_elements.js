@@ -14,7 +14,7 @@ $(document).ready(function () {
 	$('#log-in').click(function () {
 		$('#login-modal-body')
 					.find("input[type=text], input[type=password]").val("");
-		$('#login-errors').html('');
+		$('#login-errors').addClass('invisible');
 		$('#login-modal').modal('show');	
 	});
 	
@@ -37,7 +37,8 @@ $(document).ready(function () {
 				$('#login-errors').html('');
 			},
 			error: function (resp) {
-				$('#login-errors').html('<div class="alert alert-warning 						alert-dismissable">' + resp.responseJSON.errors + '</div>')
+				$('#login-errors').text(resp.responseJSON.errors)
+				$('#login-errors').removeClass('invisible');
 			}	
 		});
 	});
@@ -61,8 +62,8 @@ $(document).ready(function () {
 				$('#login-errors').html(' ');
 			},
 			error: function (resp) {
-						$('#login-errors').html('<div class="alert alert-warning">' 
-						+ resp.responseJSON.errors + '</div>')
+				$('#login-errors').text(resp.responseJSON.errors)
+				$('#login-errors').removeClass('invisible');
 			}	
 		});
 	});
@@ -93,8 +94,11 @@ $(document).ready(function () {
 	$('#add-song-button').on("click", function (event) {
 		if (!($('#log-in').attr("class") == 'invisible' )) {
 			event.preventDefault();
-			$('#require-login-content').html('Adding a song requires log-in');
-			$('#require-login').modal('show');
+			$('#login-modal-body')
+						.find("input[type=text], input[type=password]").val("");
+			$('#login-errors').text('Adding a song requires log-in');
+			$('#login-errors').removeClass('invisible');
+			$('#login-modal').modal('show');
 		}
 	})
 	
