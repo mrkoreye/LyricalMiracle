@@ -22,12 +22,15 @@
 		      <li><a href="<%= songs_url %>">All Songs</a></li>
 				</ul>
 			</li>
+			<li><a href= '#' class="invisible">l</a></li>
 	    </ul>
-	    <form class="navbar-form navbar-left" role="search" action="<%= songs_url %>" method="GET">
+			
+	    <form class="navbar-form navbar-left search-bar" role="search" action="<%= songs_url %>" method="GET">
 	      <div class="form-group">
-	        <input id="song-search" name="song[search_query]" type="text" class="form-control search-bar" placeholder="Search by title or artist">
+	        <input id="song-search" name="song[search_query]" type="text" class="form-control" placeholder="Search by title or artist">
 	      </div>
-	      <button type="submit" class="btn btn-default">Submit</button>
+
+	      <button type="submit" class="btn btn-default mag-glass"><span class="glyphicon glyphicon-search"></span></button>
 	    </form>
 	    <ul id="authentication-bar" class="nav navbar-nav navbar-right">
 				<% if current_user %>

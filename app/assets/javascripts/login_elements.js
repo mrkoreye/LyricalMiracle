@@ -73,13 +73,19 @@ $(document).ready(function () {
  
 	$('#song-search').typeahead([
 		{
-		 	name: 'songs',
-		  prefetch: '../songs.json',
+		 	// name: 'songs',
+		  prefetch: {
+				url: '../songs.json',
+				ttl: 0
+			},
 		  header: '<h4>Songs</h4>'
 		},
 		{
-		 	name: 'artists',
-		  prefetch: '../songs/artists.json',
+		 	// name: 'artists',
+		  prefetch: {
+				url: '../songs/artists.json',
+				ttl: 0
+			},
 		  header: '<h4>Artists</h4>'
 		}	
 	]);

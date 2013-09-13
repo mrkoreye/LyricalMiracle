@@ -15,7 +15,7 @@
 			  <div id="login-modal-body" class="modal-body">
 					<div id="login-errors">
 					</div>
-					<div id="google-sign-in">
+					<div class="login-l" id="google-sign-in">
 						<a href="<%= user_omniauth_authorize_path(:google_oauth2) %>">
 						<img src="/images/google_sign_in.png" alt="Sign in with Google" title="SIgn in with Google" height=60></a>
 					</div>
@@ -34,7 +34,7 @@
 								<input class="form-control" type="password" id="user_password" name="user[password]" placeholder="password">
 							</div>
 			        <div class="modal-footer">
-			          <button type="submit" class="btn btn-primary">Submit</button>
+			          <button type="submit" class="btn btn-primary login-l">Submit</button>
 			        </div>
 						</form>
 					</div>
@@ -54,7 +54,7 @@
 								<input class="form-control" type="password" id="sign_user_password_confirmation" name="user[password_confirmation]" placeholder="password confirmation">
 							</div>
 			        <div class="modal-footer">
-			          <button type="submit" class="btn btn-primary">Submit</button>
+			          <button type="submit" class="btn btn-primary login-l">Submit</button>
 			        </div>
 						</form>
 					</div>
