@@ -97,8 +97,8 @@ LyricalMiracle.Views.SongDetails = Backbone.View.extend({
 	_initializeLinks: function () {
 		var that = this;
 		//make loaded annotations work
+		var titleHtml =  "<a class='edit-annotation-link' id='annotation-";
 		this.model.get("annotations").each(function (annotation) {
-			var titleHtml =  "<a class='edit-annotation-link' id='annotation-";
 			that.$el.find('#popoverlink-' + annotation.id).popover({
 				content: annotation.get("body"),
 				html: true,

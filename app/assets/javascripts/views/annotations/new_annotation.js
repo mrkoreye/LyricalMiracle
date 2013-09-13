@@ -2,7 +2,7 @@ LyricalMiracle.Views.NewAnnotation = Backbone.View.extend({
 	
 	events: {
 		"click #new-annotation-modal-close": "removeAnnotationLink",
-		"submit #new-annotation": "submitNewAnnotation"
+		"submit #new-annotation": "submitNewAnnotation",
 	},
 
   template: JST['annotations/new'],
@@ -25,11 +25,13 @@ LyricalMiracle.Views.NewAnnotation = Backbone.View.extend({
 	submitNewAnnotation: function (event) {
 		event.preventDefault();
 		var that = this;
+		var remove = true;
 		var annotations = this.model.get('annotations');
 		var annotationForm = $(event.currentTarget).serializeJSON().annotation;
 		var replaced = annotationForm.body.replace(/\s+|<\/p>|<p>|&nbsp;/, '');
 		
 		if (replaced == '') {
+			remove = false;
 			$('#annotation-blank-error').html('<div class="alert alert-warning">Annotation cannot be blank</div>');
 		} else {
 			$('#new-annotation-modal').modal('hide');
@@ -47,7 +49,9 @@ LyricalMiracle.Views.NewAnnotation = Backbone.View.extend({
 					});
 				}
 			});
-		that.remove();
+		}
+		if (remove) {
+			this.remove();
 		}
 	},
 	

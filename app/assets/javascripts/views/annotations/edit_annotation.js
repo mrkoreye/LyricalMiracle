@@ -1,7 +1,8 @@
 LyricalMiracle.Views.EditAnnotation = Backbone.View.extend({
 	
 	events: {
-		"submit #edit-annotation": "submitEditAnnotation"
+		"submit #edit-annotation": "submitEditAnnotation",
+		"click #edit-annotation-modal-close": "removeMyself"
 	},
 
   template: JST['annotations/edit'],
@@ -10,6 +11,10 @@ LyricalMiracle.Views.EditAnnotation = Backbone.View.extend({
 		this.$el.html(this.template());
 		this._insertRichTextEditor();
 		return this;
+	},
+	
+	removeMyself: function () {
+		this.remove();
 	},
 	
 	submitEditAnnotation: function (event) {

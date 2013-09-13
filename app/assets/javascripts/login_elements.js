@@ -76,7 +76,7 @@ $(document).ready(function () {
 		{
 		 	// name: 'songs',
 		  prefetch: {
-				url: '../songs.json',
+				url: '/songs.json',
 				ttl: 0
 			},
 		  header: '<h4>Songs</h4>'
@@ -84,7 +84,7 @@ $(document).ready(function () {
 		{
 		 	// name: 'artists',
 		  prefetch: {
-				url: '../songs/artists.json',
+				url: '/songs/artists.json',
 				ttl: 0
 			},
 		  header: '<h4>Artists</h4>'

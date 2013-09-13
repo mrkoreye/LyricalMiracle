@@ -10,7 +10,7 @@ class Song < ActiveRecord::Base
       :elements => ['br'],
       :remove_contents => false
     )
-    self.body = clean_lyrics
+    self.body = clean_lyrics.gsub("'", "\\'")
   end
   
   def clean_lyrics_update
@@ -22,6 +22,6 @@ class Song < ActiveRecord::Base
       # :protocols => {'a' => {'href' => ['#']}},
       :remove_contents => false
     )
-    self.body = clean_lyrics.strip
+    self.body = clean_lyrics.strip.gsub("'", "\\'")
   end
 end
