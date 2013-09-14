@@ -24,6 +24,8 @@ LyricalMiracle.Views.NewAnnotation = Backbone.View.extend({
 	
 	submitNewAnnotation: function (event) {
 		event.preventDefault();
+		//without this the popover title was being inserted into the song
+		$('.popover, .fade, .right').remove();
 		var that = this;
 		var remove = true;
 		var annotations = this.model.get('annotations');
